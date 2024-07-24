@@ -55,6 +55,17 @@ print("Asset ID: ", asset_id)
 receiver_acct = algorand.account.random()
 print("Receiver Account: ", receiver_acct.address)
 
+# Fund receiver account
+algorand.send.payment(
+    PayParams(
+        sender=dispenser.address,
+        receiver=receiver_acct.address,
+        amount=10_000_000
+    )
+)
+
+print(algorand.account.get_information(receiver_acct.address))
+
 # showcase error whithout opt-in
 
 '''
@@ -91,18 +102,6 @@ asset_transfer = algorand.send.asset_transfer(
 
 # 3 Transfer the asset (Code above)
 # ---------------------------------------------------------
-
-
-# Fund receiver account
-algorand.send.payment(
-    PayParams(
-        sender=dispenser.address,
-        receiver=receiver_acct.address,
-        amount=10_000_000
-    )
-)
-
-print(algorand.account.get_information(receiver_acct.address))
 
 # Atomic transfer segment - optin txn / payment txn / asset transfer txn
 
