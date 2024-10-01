@@ -5,6 +5,20 @@ git clone https://github.com/algorandfoundation/algokit-utils-py.git
 cd algokit-utils-py
 pip install .
 cd ..
+
+TODO:
+1. Import from the algokit_utils library 
+2. Connect to localnet
+3. Import dispenser
+4. Create account
+5. Fund account
+6. Create Asset
+7. Create receiever account
+8. Fund receiver acccount
+9. Group transaction:
+Opt-in to asset --> Payment txn --> asset transfer
+10. Print the results in CLI and observe in LORA
+
 """
 
     
@@ -25,12 +39,11 @@ algorand = AlgorandClient.default_local_net()
 dispenser = algorand.account.dispenser()
 print("Dispenser Address: ", dispenser.address)
 
-# Create a wallet for the creator of the token
+# Create an account called creator and prints its information
 creator = algorand.account.random()
 print("Creator Address: ",creator.address)
-
-# Get account info about creator
 print(algorand.account.get_information(creator.address))
+
 
 # Fund creator address with algo
 algorand.send.payment(
@@ -41,7 +54,7 @@ algorand.send.payment(
     )
 )
 
-# Check out the creator account changes after funding
+# Check out the creator account changes after funding ** AND on LORA!
 print(algorand.account.get_information(creator.address))
 
 # Create Algorand Standard Asset
@@ -51,9 +64,9 @@ sent_txn = algorand.send.asset_create(
         total= 1000,
         asset_name="nameofasset",
         unit_name="NOA",
-        manager=creator.address,
-        clawback=creator.address,
-        freeze=creator.address
+        manager=creator.address, # To re-configure or destory an Asset
+        clawback=creator.address, # To take tokens from other accounts if ture, can only be instaniated at creation
+        freeze=creator.address # To pause all transfers of the asset if true, can only be instaniated at creation
     )
 )
 
