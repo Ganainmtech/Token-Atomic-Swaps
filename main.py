@@ -1,3 +1,13 @@
+"""
+Commands to set up algokit utils:
+
+git clone https://github.com/algorandfoundation/algokit-utils-py.git
+cd algokit-utils-py
+pip install .
+cd ..
+"""
+
+    
 from algokit_utils.beta.algorand_client import (
     AlgorandClient,
     AssetCreateParams,
@@ -106,10 +116,10 @@ asset_transfer = algorand.send.asset_transfer(
 # Atomic transfer segment - optin txn / payment txn / asset transfer txn
 
 # Create a new transaction group
-group_tx = algorand.new_group()
+group_txn = algorand.new_group()
 
 # Add an asset opt-in transaction to the group
-group_tx.add_asset_opt_in(
+group_txn.add_asset_opt_in(
     AssetOptInParams(
         sender=receiver_acct.address,  
         asset_id=asset_id               
@@ -117,7 +127,7 @@ group_tx.add_asset_opt_in(
 )
 
 # Add a payment transaction to the group
-group_tx.add_payment(
+group_txn.add_payment(
     PayParams(
         sender=receiver_acct.address,   
         receiver=creator.address,       
@@ -125,7 +135,7 @@ group_tx.add_payment(
     ))
 
 # Add an asset transfer transaction to the group
-group_tx.add_asset_transfer(
+group_txn.add_asset_transfer(
     AssetTransferParams(
         sender=creator.address,         
         receiver=receiver_acct.address, 
@@ -135,7 +145,7 @@ group_tx.add_asset_transfer(
 )
 
 # Execute the transaction group
-group_tx.execute()
+group_txn.execute()
 
 # Print the entire information from the Receiver Account
 print(algorand.account.get_information(receiver_acct.address))
