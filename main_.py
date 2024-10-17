@@ -32,14 +32,21 @@ from algokit_utils.beta.algorand_client import (
 # Client to connect to localnet
 algorand = AlgorandClient.default_local_net()
 
-# Import dispenser from KMD 
+"""
+And testnet would be: algorand = AlgorandClient.test_net()
+"""
+
+# Import dispenser from KMD (Key Management Daemon)
 dispenser = algorand.account.dispenser()
 print("Dispenser Address: ", dispenser.address)
 
 # Create an account called creator and prints its information
 creator = algorand.account.random()
-print("Creator Address: ",creator.address)
 print(algorand.account.get_information(creator.address))
+
+# Create receiver account and prints its information
+receiver_acct = algorand.account.random()
+print(algorand.account.get_information(receiver_acct.address))
 
 
 # Fund creator address with algo
@@ -51,12 +58,9 @@ algorand.send.payment(
     )
 )
 
-# Check out the creator account changes after funding, observe with lora via algokit explore
+# Check out the creator account changes after funding
+# Also observe with LORA via 'algokit explore'
 print(algorand.account.get_information(creator.address))
-
-# Create receiver account
-receiver_acct = algorand.account.random()
-print("Receiver Account: ", receiver_acct.address)
 
 # Fund receiver account
 algorand.send.payment(
@@ -118,7 +122,8 @@ group_txn.add_payment(
         sender=receiver_acct.address,   
         receiver=creator.address,       
         amount=1_000_000                
-    ))
+    )
+)
 
 # Add an asset transfer transaction to the group
 group_txn.add_asset_transfer(
